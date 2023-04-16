@@ -2,8 +2,16 @@
 
 - hosts: all
   become: true
-  tasks:
+  pre_tasks:
+  - name: install updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
 
+- hosts: web_servers
+  become: true
+  tasks:
   - name: install apache2 and php in the two nodes ubuntu
     apt:
       name:
